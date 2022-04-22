@@ -30,5 +30,5 @@ I'd like to take completeness even further by
    this repo.
 
 If you're reading this and you're not me, welcome! I mainly just did all this
-for my own personal satisfaction, but I'd be delighted if it helped out someone
+out of my own interest, but I'd be delighted if it helped out someone
 else as well. So feel free to look around :)
