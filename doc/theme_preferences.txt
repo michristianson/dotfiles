@@ -1,0 +1,73 @@
+Dotfiles: Theme Preferences
+
+This file contains a list of standard Base16 themes that I like. They are
+categorized by the type of theme and by how much I like them.
+
+NOTE: these lists might not be accurate (or might become inaccurate in the
+future), since they were tested only on output from some terminal commands and
+some .vim files (but without the base16-vim plugin, which completely changes how
+.vim files look). In other words, I probably did not correctly evaluate how any
+files will look in (neo)vim with any of the available base16 themes, and I
+didn't even try to look at many types of files that I might be looking at often
+in the future.
+
+TODO: Update these lists at some point in light of the above note.
+
+Light
+-----
+Acceptable
+atelier-dune-light, atelier-sulphurpool-light, cupertino, gruvbox-light-hard,
+summerfruit-light, tomorrow
+
+Good
+atelier-heath-light, solarized-light
+
+Best
+atelier-forest-light, atelier-seaside-light, google-light
+
+
+
+Colorful Dark
+-------------
+Acceptable
+flat, material-palenight, monokai, nord, papercolor-dark, unikitty-dark
+
+Good
+atlas, dracula, harmonic-dark, horizon-dark, materia, oceanicnext, onedark,
+porple, paraiso, phd
+
+Best
+material, snazzy, solarflare
+
+
+
+Muted Dark
+----------
+Acceptable
+atelier-cave, atelier-forest, atelier-lakeside, atelier-savanna,
+brushtrees-dark, classic-dark, codeschool, default-dark, embers,
+gruvbox-dark-hard, gruvbox-dark-soft, marrakesh, mocha
+
+Good
+circus, darktooth, embers, gruvbox-dark-medium, hopscotch, solarized-dark,
+spacemacs, woodland
+
+Best
+helios, railscasts, eighties and tomorrow-night-eighties (in my limited tests,
+both these themes looked exactly the same to me)
+
+
+
+Crisp Dark
+----------
+Acceptable
+bright, google-dark, irblack, isotope, pop
+
+Good
+brewer, chalk, material-darker, summerfruit-dark, tube
+
+Best
+material-vivid, seti, synth-midnight-dark
+
+
+

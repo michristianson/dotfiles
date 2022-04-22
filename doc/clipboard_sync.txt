@@ -1,0 +1,92 @@
+Dotfiles: Clipboard Details
+
+It turns out that synchronizing clipboards between all my different
+command-line applications is quite difficult. I have some synchronization
+working at the moment, but this setup is definitely a work in progress.
+This document describes where my clipboards stand and what I would like
+to do to improve them in the future.
+
+The Current Setup
+-----------------
+Currently, there are 3 clipboards that I have to worry about:
+
+1. The system clipboard. For me, this generally means the X server's
+   clipboard selection (not the primary selection or the cut buffers),
+   which can be accessed directly using xclip or xsel.
+
+2. Zsh's internal clipboard. Technically speaking, zsh maintains a
+   "cut buffer" with the most recently cut/copied text and a "kill ring"
+   that contains previously cut/copied text (up to 8 of them by default).
+   See this page of the zsh documentation for more info:
+
+   https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html
+
+   I don't actually know hot to use the kill ring; typically, I just use
+   the cut buffer by using y/p in vi mode's "normal mode."
+
+3. Tmux's paste buffers. Each buffer holds one piece cut/copied text,
+   so the list of all buffers functions as clipboard history. I have
+   keybindings for both pasting from the most recent buffer and choosing
+   a buffer from the list to paste from.
+
+Thankfully, nvim seems to access the system clipboard with no extra
+configuration on my part, so everything works fine there, and I
+generally don't use SSH sessions, which I'm told add another layer of
+complication.
+
+Here are the things in my setup that help synchronize these 3 clipboards:
+
+(a) I have the zsh-system-clipboard plugin for zsh. This synchronizes
+    zsh's cut buffer with the system clipboard: everything that is
+    cut/copied into one can be pasted out of the other.
+
+(b) My keybindings for copying in tmux use copy-pipe-and-cancel, which
+    copies to a tmux paste buffer and then pipes the text to a
+    system command. In my case, that system command is xclip, so any
+    text copied through tmux will also be copied to the system clipboard
+    (hence also to zsh's clipboard, thanks to the
+    zsh-system-clipboard plugin).
+
+These two things make all clipboard synchronization work, except that
+copying anything to the system clipboard or to zsh doesn't appear in
+tmux's paste buffers. I can often get around this by just pasting from
+zsh's clipboard instead of using tmux's paste buffers, but this doesn't
+work 100% of the time (for instance, when trying to paste into a CLI
+that is waiting for input. I don't know how to paste from zsh's
+clipboard in such a situation like this, because I can't use jk to get
+into normal mode.) I would like to have a solution that just synchronizes
+with tmux automatically so I don't have to worry about this.
+
+
+
+Future Steps
+------------
+Here are a few ideas to improve the current clipboard setup.
+
+1. The zsh-system-clipboard plugin does have a setting to sync with the
+   tmux paste buffers. However, it doesn't seem to be working for me for
+   some reason. If we can get this working, it might solve all of our
+   problems.
+
+2. There may be other tmux plugins that synchronize with the system
+   clipboard. If so, these could be an easy solution as well.
+
+3. I've found a blog post that treats all of these clipboard issues
+   and more in elaborate detail:
+   
+   https://blog.d46.us/zsh-tmux-emacs-copy-paste/
+
+   The author has custom shell scripts in his dotfiles that automate all
+   of his solutions to the clipboard issues described in the post. It
+   might be best to just use his scripts, possibly after modifying them
+   for my own purposes. (Looking at the source code for a plugin like
+   zsh-system-clipboard might also be helpful.)
+
+4. For tmux 3.2 and later, there is an option called copy-command that
+   sets the command to pipe to after copying. This is basically just a
+   way to formalize what we're already doing in tmux with
+   copy-pipe-and-cancel, but if we eventually end up with a new enough
+   version of tmux, it might be nice to migrate to this. For more
+   information, see this page:
+   https://github.com/tmux/tmux/wiki/Clipboard
+

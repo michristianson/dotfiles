@@ -1,0 +1,153 @@
+Dotfiles: Learning More About vim 
+
+Overview
+--------
+I've been using vim for about 8 years now, but I recently realized that there
+are still a lot of features of vim that I don't know well enough to use
+efficiently. This file contains some ideas I have for learning about these
+features and incorporating them into my workflow over time.
+
+I believe that vim should be learned gradually, in "batches." Learning a lot
+of features at once makes it very difficult to remember what they all do, get
+the muscle memory down, learn in which situations to apply one over the other,
+etc. Instead, I plan to focus on mastering a couple techniques at once, only
+adding new ones after the old ones become second-nature to me. This way,
+whatever I'm learning never slows me down too much, nothing slips through the
+cracks, and over time, I will learn all kinds of very cool things that vim has
+to offer.
+
+I hope one day to write a plan for different "batches" of vim features to learn
+in order, from the very basics up to the advanced stuff. I think this would be
+a really fun way to solidify my mastery and help others learn. But for now, I
+am at least getting started on learning some new "batches" of my own!
+
+
+
+General Features To Master
+--------------------------
+Here's a list of big, general features of vim that, from what I can tell, are
+most likely very useful for any workflow. These are the main things that I want
+to focus on mastering.
+
+- Buffers (In progress)
+  https://old.reddit.com/r/vim/comments/5dfcxw/
+- Registers (In progress)
+  https://www.brianstorti.com/vim-registers/
+
+- Windows (start with same link as for buffers above)
+- Tabs? (Not sure whether I'd use these or not)
+- Cscope
+- Tags (and the options tagcse, tagfunc, tagstack, etc.)
+- Built-in motions/commands that I don't use? (See :h quickref)
+
+
+
+IDE-Like Features
+-----------------
+One thing I know very little about is how to use vim like an IDE. I know many
+people do it successfully, but I haven't done that much coding in vim, so I
+don't have a workflow like this yet. Here are some ideas that I've seen around
+that might be useful for this.
+
+Topics to look into
+  - make/errorlist/etc.
+  - LSP stuff
+  - "Potential Coding Plugins" list below.
+
+Potentially useful options
+- comments, commentstring
+- cscope stuff, format stuff, declare/include stuff, make stuff
+- smartindent, indentexpr, or cindent
+       (I'm guessing indents will be best handled by language-specific
+       stuff, but maybe there is a good default to put in init.vim. Or,
+       maybe the best default will work, well, by default, without setting
+       anything in init.vim?)
+-complete, completefunc, completeslash, completeopt, dictionary, omnifunc,
+ showfulltag
+
+
+
+Situationally Useful Features
+-----------------------------
+Here's a list of situationally useful vim features that weren't even on my
+radar until I started reworking my dotfiles to start this repo. I hope to
+incorporate some of these into my workflow over time as well. 
+
+- diff mode: side-by-side comparison of multiple versions of a file.
+
+- digraphs: In insert mode, Ctrl+k {char1}{char2} inserts {char1} but
+  modified a digraph determined by {char2}. In particular, it can be used
+  to type many standard accent marks as well as other alphabets (e.g.
+  Cyrillic and Greek).
+
+- foldclose and foldcolumn options: potentially useful when working with a
+  lot of folds in a file.
+
+- :grep command: searches for a string in files and displays matching files
+  in an error list. Kind of cool, but I think the same basic operation
+  could be done by just shelling out (or executing in a separate tmux
+  window/pane).
+
+- list option: see different types of whitespace (displayed as text
+  characters).
+
+- normal mode K and keywordprg option: check man/help on text under cursor
+
+- modelines: set specific options for a specific file using a line in
+  that file.
+
+- mouse support (see mouse and related options): seems to defeat the
+  purpose of modal editing, but interesting because highly configurable.
+
+ CTRL-A, CTRL-x: adds/subtracts 1 to number under cursor. With
+  "set nrformats+=alpha", can also be used to "add" or "subtract" letters
+  (i.e. move them to the next/previous letter in the alphabet)
+
+- number option: shows line numbers to the left of every line. with
+  relativenumber, can be useful for determining [count] in motions.
+
+- printing: not a function I expect to use, but good to know it exists.
+  (The documentation says it's only for Windows, though.)
+
+- quickfixtextfunct: not totally sure what to use the quickfix window
+  for, but maybe this would be useful?
+
+- ":mksession" and ":mkview" command: save the state of the current editing
+  session or the current window.
+
+- ">" and "<" commands in normal mode or CTRL-T and CTRL-D in insert mode:
+  add or remove one indent (in insert mode, for current line; in
+  normal mode, operators, so they expect a motion after, or do ">>" or
+  "<<" to apply to the current line.)
+
+ - cc on a blank line: uses the indent that would be calculated if you
+   hit o on the previous line. (I usually just use a to get into insert
+   mode, then <BS> to delete the line and <Enter> to recreate it. But cc
+   is slightly more efficient.)
+
+- spell option: automatic highlighting of misspelled words. "z=" will
+  suggest corrections for misspelled words under the cursor. (There
+ are many other available commands and settings as well.)
+
+- verbose and verbosefile: get more messages about what's going on,
+  and record all messages in a file.
+
+- visual block mode (CTRL-V in insert or command mode): like visual mode,
+  but for highlighting rectangles instead of whole lines.
+
+- The * and # commands, which start searches forward and backward
+  (respectively) for the word nearest (e.g. under) the cursor.
+
+- Text objects (see :h text-object for an overview and a list.)
+
+- g+ and g-: used to navigate every branch of the undo tree in order of
+  the timestamp on each change. These are able to access every previous
+  text state (i.e. to every branch of the undo tree), unlike u and Ctrl-r.
+
+- concealing: can be used as a sort of "inline folding" for displaying
+  certain syntax in a prettier (or more concise) way.
+
+- command-line completion: pressing <Tab> when typing in a command gives
+  pretty solid completion options out-of-the-box. Exact behavior can be
+  customized using the options that start with "wild" (wildchar,
+  wildmenu, wildmode, etc.)

@@ -1,0 +1,143 @@
+Dotfiles: My Computer Setup
+
+This document contains everything I usually do to set up a new Linux machine.
+Eventually, I hope to automate some (or all) of this into a shell script.
+But first, I wanted to write everything out, so that I at least have a "script"
+that I can execute manually if need be.
+
+Step I: Terminal Setup
+----------------------
+1. Install zsh, tmux, and neovim as system packages
+   (with apt, pacman, etc.)
+
+2. Install git, fzf, and ag (aka the "silver searcher") as
+   system packages.
+
+3. Use git to download dotfiles repo. Symlink .zshrc,
+   .tmux.conf, and init.vim to their appropriate locations
+   ($HOME/ for .zshrc and .tmux.conf, $HOME/.config/nvim/ for init.vim).
+
+4. Install zsh plugins. These all live on github and get sourced in
+   .zshrc, so we just need to clone the repo's to the location that
+   .zshrc is sourcing. Currently, here is a list of all the repos
+   and where .zshrc is sourcing them from:
+
+   base16-shell: https://github.com/chriskempson/base16-shell
+                 ~/.config/base16-shell
+
+   zsh-system-clipboard: https://github.com/kutsan/zsh-system-clipboard
+                         ~/.zsh/plugins/zsh-system-clipboard
+
+   zsh-syntax-highlighting: https://github.com/zsh-users/zsh-syntax-highlighting
+                            /usr/share/zsh-syntax-highlighting/zsh-syntax-hilghting.zsh
+   Note: zsh-syntax-highlighting is in a somewhat unusual place because
+   I installed it as a system package.
+
+   TODO: We should probably just switch over to a zsh plugin manager at
+   some point. Since we only have a couple plugins, it probably doesn't matter
+   too much which one. However, here is a (very, very in-depth) comparison of
+   all the different ones out there:
+
+   https://www.reddit.com/r/zsh/comments/ak0vgi/a_comparison_of_all_the_zsh_plugin_mangers_i_used/
+
+5. Install neovim plugins. First, we need to install vim-plug manually
+   with the following command (copied from the vim-plug installation
+   instructions):
+
+   sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+          https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+   Then, we get vim-plug to install all our other packages by using the
+   ":PlugInstall" command inside of nvim.
+
+
+
+Step II: Accessing Files
+------------------------
+1. Install Go (the programming language) as a systam package.
+
+2. Install the Google Drive CLI written by Burcu Dogan using the following
+   command:
+
+   go get -u github.com/odeke-em/drive/cmd/drive
+
+   A couple important notes about this step:
+   (1) Starting in Go 1.17, "go get" is a deprecated command; "go install" is
+       the intended replacement. I don't know if the -u flag is still necessary;
+       if you have Go 1.17 or newer, try "go help install" to find out. But I
+       think this shouldn't really be a problem.
+   (2) There is another Google Drive CLI named "dirve." It is maintained on a
+       repo by Github user prasmussen. This is NOT the one we want; we want the
+       one maintained by user odeke-em. 
+
+3. Make sure the default GUI file manager works for you. If you want, install a
+   different file manager, or possibly a terminal file manager like Ranger.
+   (I do most basic file operations on the command line directly, but it's
+   nice to have these for occasional easier uses, or if I forget a command or
+   smoething.)
+
+
+
+Step III: Browser Setup
+-----------------------
+1. Download Google Chrome as a system package.
+
+2. Open Chrome and sync your Google account settings using the button in the
+   upper-right corner.
+
+3. Optional: configure plugins. In particular, a separate dotfile for cvim
+   should in principle be downloaded from the cloud. In practice, though, I
+   don't actually use that plugin very much at the moment.
+
+Step IV: Odds and Ends
+----------------------
+This section covers some miscellaneous applications that I often like to have
+set up for whenever I need them. Most of these are relatively optional and may
+be subject to changing preferences and/or specific use cases for the computer
+in question.
+
+1. PDF viewer: my preference is zathura, which can usually be installed as a
+   system package. Also look for packages that allow zathura to use mupdf as a
+   backend; these don't exist on every Linux distro, and most of the time they
+   aren't very important. However, mupdf is blazing fast, and this can be a
+   huge benefit when viewing massive (say, 50-100MB) PDF's.
+
+   Alternatives: the default PDF viewer (often evince) is usually fine. Foxit
+   is also good if you want something a little bit fancier.
+
+2. Programming languages: this depends a lot on what exactly we intend to do
+   on this computer. But, some that I have often wanted in the past are:
+   - Python 3 (and sometimes Python 2 as well)
+   - LaTeX: typically through texlive; may also need to install biber, latexmk,
+     and/or a texlive package manager separately. Note that my standard preamble
+     lives in this repo (mypreamble.sty).
+
+3. Virtual machines: for my Linux machines (which are typically guests), this
+   usually means installing virtualbox's guest additions. But if we want to be
+   a host, then consider installing virtualbox itself.
+
+4. Social: I usually just use Zoom on my phone and my Windows machine, but if
+   we ever want Zoom on packages can be downloaded from
+   Zoom's website and installed locally using the system package manager.
+
+5. Music/video player: I rarely ever use these, so the defaults are generally
+   fine; just make sure they're installed and that they work properly.
+
+6. Finally, consider installing any of the following: IDE's, video games, conky,
+   or any other apps you're currently using and/or interested in.
+
+
+
+TODOs To Improve This Setup
+---------------------------
+- Make a shell script to automate some (or all) of this. Here's a guide for
+  doing so that looks really good:
+
+  https://jogendra.dev/i-do-dotfiles
+
+- Pick a preferred window manager (maybe something basic and flexible, e.g. i3,
+  openbox, icewm, or fluxbox) and configure it to my liking. Then, put the
+  corresponding dotfile in this repo.
+- Antivirus stuff? What about a password manager?
+- Clean up browser bookmarks
+- Maybe switch browsers to Vivaldi (and/or a terminal-based web browser?!)

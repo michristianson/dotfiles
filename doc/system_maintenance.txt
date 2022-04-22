@@ -1,0 +1,89 @@
+Dotfiles: System Maintenance Checklist
+
+Routine maintenance of computers is something that Linux (and
+especially rolling distros like Arch) has always told me to do but
+that I've never developed the habit of doing consistently. To help
+with this, here's a checklist for basic maintenance of a system
+configured with the dotfiles in this repo.
+
+Many of the steps here are taken from the following wiki page (which
+seems to have good practices even for non-Arch systems):
+
+https://wiki.archlinux.org/title/System_maintenance
+
+
+
+Regular Maintenance
+-------------------
+1. Push everything from Google drive as well as any git repos.
+
+2. Check locations such as ~/bin, ~/Documents, or ~/Downloads that
+   weren't backed up in Step 1 but that might contain important files.
+   Back up files from these locations as needed.
+
+3. Optionally back up other system data. For instance, the Arch wiki
+   suggests backing up the list of installed packages as well as the
+   package manager database. If the machine is a VM, consider backing
+   up the whole machine with a snapshot. It is also possible to take
+   a snapshot of a non-virtual machine; see the following link for
+   details:
+
+   https://wiki.archlinux.org/title/System_backup
+
+4. Check for system errors using the systemctl and journalctl
+   commands and by reviewing the Xorg logs in
+   ~/.local/share/xorg (for older versions of xorg, in /var/log).
+   More specifically, the Arch wiki suggests using the command
+
+   systemctl --failed
+
+   to list all failed system units and the command
+
+   journalctl -p 3 -b
+
+   to list all error messages from systemctl in the current boot that
+   have priority 3. (But it also says that some important errors might
+   not actually have priority 3. . .)
+
+5. Update all system packages with the system package manager
+   (by running a command like apt update, pacman -Syu, etc.)
+   Some distros have specific instructions about how to update system
+   packages; for instance, Arch Linux has a whole wiki page about
+   recommended practices, which includes monitoring news about unusual
+   updates on the Arch Linux home page. Following these distro-specific
+   instructions is not a lot of fun, but it's probably still worth doing!
+
+6. Update all zsh plugins. Currently, we don't have a package manager
+   and are installing by just cloning git repos; these can be updated
+   with a git pull command wherever they are cloned to.
+
+7. Update all neovim plugins by using the command
+   ":PlugUpdate | PlugUpgrade" in neovim.
+   Explanation: ":PlugUpdate" command updates all plugins, the
+   ":PlugUpgrade" command updates vim-plug, which is our plugin manager,
+   and I think the "|" chains together the two commands (more
+   specifically: there is no "piping" of output, like on the shell,
+   but the second command is just executed on its own if the first
+   command succeeds.)
+
+8. Reboot the system so that all of the updates take effect.
+
+
+
+Not-Necessarily-As-Regular Maintenance
+--------------------------------------
+1. Clean the filesystem. The Arch wiki page at the top of this document
+   describes how to do several useful cleaning steps, namely: removing
+   unused packages and cached package files;
+   cleaning out unused files in ~/.config, ~/.cache, and ~/.local/share;
+   and dealing with broken symlinks.
+
+2. Clean up our own documents, e.g. those in ~/bin, ~/Downloads, or 
+   ~/Documents, or those in the cloud.
+
+3. Review dotfiles and evaluate whether current options, key-bindings,
+   etc. are working well for our current workflow.
+
+4. Review TODO's in dotfiles (and in the dotfile repo docs).
+   Maybe it's time to do these so that we can have a better experience
+   using our setup in the future!

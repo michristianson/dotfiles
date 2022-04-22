@@ -1,0 +1,194 @@
+Dotfiles: Appearance Information
+
+TODO's
+------
+- Check out some of these nice themes, and possibly make Base16 themes out of
+  them:
+
+  Monokai-Like Themes
+  https://monokai.pro/vscode
+  https://github.com/sainnhe/sonokai
+  https://www.reddit.com/r/vim/comments/ricddy/monokai_pro_color_scheme/
+  https://github.com/chriskempson/base16-vim/blob/master/colors/base16-monokai.vim
+
+  Variants of Other Standard Themes
+  https://material-theme.site/
+  https://github.com/rmehri01/onenord.nvim
+  https://github.com/navarasu/onedark.nvim
+
+  Unique Themes
+  https://github.com/folke/tokyonight.nvim
+  https://github.com/bluz71/vim-moonfly-colors
+  https://github.com/bluz71/vim-nightfly-guicolors
+
+- Further synchronize vim, tmux, and zshrc colors by defining all specific
+  color settings according to some shell variables for primary colors,
+  accent colors, etc.
+- Try out the "font stuff" described above.
+
+
+
+Overview of Base16
+------------------
+All the themes I use for my terminal setup come from Base16, which according
+to its Github page is "[a]n architecture for building themes based on carefully
+chosen syntax highlighting using a base of sixten colors." The main
+benefits of using Base16 are:
+
+- several standard themes are provided out-of-the-box;
+- themes are made with syntax highlighting in mind;
+- plugins exist to apply Base16 themes to many popular applications; and
+- these plugins are often able to automatically sync the themes in use.
+
+A very brief background about the components of the Base16 architecture:
+
+- A "scheme file" is a file containing the colors for a given theme.
+- A "template file" is a template that dictates how theme files should be
+  formatted for a specific application. For instance, there exist template files
+  for emacs (which are formatted the way an emacs theme file would be), vim
+  (which are formatted the way vim colorscheme files would be), etc.
+- A "builder" is a program that "plugs in" the colors from a scheme file 
+  into a template file to provide a theme file for a given application.
+
+
+
+Our Base16 Setup
+----------------
+We currently make use of the following Base16 plugins:
+
+- base16-shell, which sets all terminal colors for zsh (hence also for tmux)
+  according to a specific Base16 theme.
+- base16-vim, which sets the colorscheme and syntax highlighting for vim
+  according to a Base16 theme. This plugin syncs with the theme used by
+  base16-shell automatically (this is a feature of these two plugins, plus
+  some settings for base16-vim that appear in init.vim).
+
+Usages of specific colors occurs in the following dotfiles:
+
+- In .zshrc, we set specific colors for PS1 (i.e. the shell prompt).
+- In .tmux.conf, we set specific colors for the tmux status line.
+- In init.vim, we set specific colors for the vim status line.
+
+These additional settings make use of terminal colors 0-21, which are set by
+base16-shell according to the current theme.
+
+The themes provided out-of-the-box for Base16 are already great. However, if
+we find (or create) some new theme that we want to use with Base16, here's what
+we need to do:
+
+1. Create a scheme file with all the theme colors. These files are very simple:
+   they are essentially just a list of the 16 colors in the theme (in a
+   specific order according to the way each color will be used). For details,
+   see the following links:
+   https://github.com/chriskempson/base16/blob/master/styling.md
+   https://github.com/chriskempson/base16/blob/master/file.md
+
+2. Obtain a template file for Base16 shell themes. This comes with the
+   base16-shell plugin, so it can be found either on the git repo for the plugin
+   or wherever the plugin is installed locally (most likely
+   ~/.config/base16-shell).
+
+3. Use a builder on the scheme and template files to make a shell script that
+   sets the theme. base16-shell says it used "Base 16 Builder PHP"; for other
+   builders written in other languages (e.g. Go, Python, Rust, Ruby), see
+   the Github repo for Base16:
+   https://github.com/chriskempson/base16
+
+4. In our .zshrc, run the script that the builder made.
+
+
+
+Font Stuff
+----------
+Apparently, a patched font with "glyphs" can be used to get fancy-looking
+"pointed blocks" instead of just rectangular blocks on the tmux and vim status
+lines. I haven't looking into this yet, but a blog post I read suggested using
+a font from:
+
+https://www.nerdfonts.com/
+
+Once we pick a font (the blog post writer uses losevka), all we have to do is
+test for the existence of this font, and if it does exist, then put arrow
+glyphs (I think specifically the glyph "nf-fa-caret_right" for Nerd Fonts
+glyphs) on the right end of the various "blocks" in our status line formats.
+
+I don't really know anything more than this about fonts. But maybe we could
+learn a little bit and pick one that we like and that looks good (especially
+one that looks good when code is displayed with it)?
+
+
+
+Terminal Colors and base16-shell
+--------------------------------
+The theme scripts that base16-shell provides work by changing the colors
+0-21 (inclusive) of a 256-color terminal according to the Base16 theme chosen.  
+More specifically:
+
+- Colors 0-8 are set so as to provide relatively "standard" colors to any 
+  terminal application that expects to use 16 colors (e.g. color 1 is
+  frequently still red, though this could vary depending on the specific theme);
+- Colors 9-14 are the same as colors 1-6 (in the same order). Typically,
+  9-14 are "bright" versions of 1-6; Base16 themes don't have bright versions
+  of these colors, so making them the same is again a way to provide
+  compatibility with terminal applications that expect the standard 16-color
+  palette.
+- Colors 16-21 contain the rest of the colors in the Base16 theme
+  (which are typically various shades of neutral colors like gray/white/black).
+
+As explained above, the upside to this setup is that it allows many terminal
+applications to automatically make use of the Base16 theme. The downside is,
+when we are making our own specific color settings (e.g. for the tmux or vim
+status lines), it is somewhat harder to know what colors will be what, exactly.
+
+To this end, I've written out some tables to convert Base16 colors to
+terminal colors (and vice versa). These tables came from pulling the relevant
+values out of the base16-shell template file. Usages for Base16 colors are taken
+from the "Styling Guidelines" page on the Base16 Github repository. Colors listed
+for the shell colors are the standard colors in most terminals, but they may
+vary for different Base16 themes.
+
+Base16 | Sh | Usage
+-------------------
+base00 | 00 | Default Background
+base01 | 18 | Lighter Background (Used for status bars, line number and folding marks)
+base02 | 19 | Selection Background
+base03 | 08 | Comments, Invisibles, Line Highlighting
+base04 | 20 | Dark Foreground (Used for status bars)
+base05 | 07 | Default Foreground, Caret, Delimiters, Operators
+base06 | 21 | Light Foreground (Not often used)
+base07 | 15 | Light Background (Not often used)
+base08 | 01 | Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
+base09 | 16 | Integers, Boolean, Constants, XML Attributes, Markup Link Url
+base0A | 03 | Classes, Markup Bold, Search Text Background
+base0B | 02 | Strings, Inherited Class, Markup Code, Diff Inserted
+base0C | 06 | Support, Regular Expressions, Escape Characters, Markup Quotes
+base0D | 04 | Functions, Methods, Attribute IDs, Headings
+base0E | 05 | Keywords, Storage, Selector, Markup Italic, Diff Changed
+base0F | 17 | Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
+
+Sh | Base16 | Color
+-------------------
+00 | base00 | Black
+01 | base08 | Red
+02 | base0B | Green
+03 | base0A | Yellow
+04 | base0D | Blue
+05 | base0E | Magenta
+06 | base0C | Cyan
+07 | base05 | White
+08 | base03 | Bright Black
+--------------------
+09 | base08 | Same as 01
+10 | base0B | Same as 02
+11 | base0A | Same as 03
+12 | base0D | Same as 04
+13 | base0E | Same as 05
+14 | base0C | Same as 06
+--------------------
+15 | base07 | Bright White
+16 | base09 | Varies
+17 | base0F | Usually "grayed out"
+18 | base01 | "Lighter Background" (than 00)
+19 | base02 | "Selection Background"
+20 | base04 | "Dark Foreground"
+21 | base06 | "Light Background"
