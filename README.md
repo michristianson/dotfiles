@@ -20,7 +20,7 @@ think make for good dotfiles.
    be documented so I can easily come back to it later.
 
 At this point, I think my dotfiles meet these criteria pretty well.
-I've combed through all of them and removed everything I didn't understand or
+I've combed through all the files and removed everything I didn't understand or
 didn't want. I've also left extensive comments, and I've put some files
 containing thoughts/future ideas in the doc folder of this repo. In the future,
 I'd like to take completeness even further by
@@ -30,5 +30,5 @@ I'd like to take completeness even further by
    this repo.
 
 If you're reading this and you're not me, welcome! I mainly just did all this
-for my own personal satisfaction, but I'd be delighted if it helped out a
-fellow human as well, so feel free to look around :)
+for my own personal satisfaction, but I'd be delighted if it helped out someone
+else as well. So feel free to look around :)
