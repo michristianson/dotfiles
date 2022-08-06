@@ -1,0 +1,141 @@
+Dotfiles: My Windows Setup
+
+This document contains everything I usually do to set up a new
+Windows machine. I prefer to do most of my work on Linux, so this setup
+essentially gets some minimal functionality working and then installs
+a (Linux) virtual machine using the steps in computer_setup.txt.
+
+Step I: Browser Setup
+-----------------------
+1. Download Google Chrome as a system package.
+
+2. Open Chrome and sync your Google account settings using the button in
+   the upper-right corner.
+
+3. Optional: configure plugins. In particular, a separate dotfile for cvim
+   should in principle be downloaded from the cloud. In practice, though,
+   I don't actually use that plugin very much at the moment.
+
+
+
+Step II: Neovim Setup
+---------------------
+1. Install scoop, a command-line package manager for Windows. Then, in
+   PowerShell, run the following command:
+
+   scoop bucket add extras.
+
+   This will allow scoop to install from the bucket named "extras."
+
+2. Install Neovide, a Windows GUI for neovim. This can easily be done
+   using scoop (it's in the "extras" bucket): in PowerShell, use
+   the command
+
+   scoop install neovide
+
+   After this, obtain our init.vim from the dotfiles repo and put it in
+   the Windows equivalent of ~/.config/nvim (which is typically
+   C:\Users\USERNAME\AppData\Local\nvim).
+
+3. Install nvim packages. First, we need to install vim-plug manually
+   by running the following command in PowerShell:
+
+   iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |`
+       ni "$(@($env:XDG_DATA_HOME, $env:LOCALAPPDATA)[$null -eq $env:XDG_DATA_HOME])/nvim-data/site/autoload/plug.vim" -Force
+
+   Then, run :PlugInstall in nvim to install all packages.
+
+Note on colorschemes for Neovide: Unfortunately, base16-shell
+doesn't work on Windows. (There are alternatives for PowerShell,
+but after trying to get them to work for a while and failing, I
+decided it wasn't worth it.) However, the base16-vim plugin will
+still generate all standard base16 colorschemes and make them
+available within nvim. So, we can pick any base16 scheme manually
+using the command ":colo base16-[NAME]."
+
+Our init.vim has a line that automatically sources a base16
+colorscheme (namely, oceanicnext) when it detects that Neovide is
+running. To add additional colorschemes, build them using the
+base16-vim template and then place them in
+C:\Users\USERNAME\AppData\Local\nvim\colors.
+
+
+
+Step III: System Settings
+------------------------
+1. Play around with settings such as desktop background, font size, task
+   bar location, etc.
+
+2. Uninstall bloatware.
+
+3. Configure which apps are pinned to the taskbar.
+
+4. Remap caps lock to control: open PowerShell as administrator
+   (shortcut: hit Win+x and then use the corresponding option in the menu
+   that pops up), and then copy/paste the following lines:
+
+   $hexified = "00,00,00,00,00,00,00,00,02,00,00,00,1d,00,3a,00,00,00,00,00".Split(',') | % { "0x$_"};
+
+   $kbLayout = 'HKLM:\System\CurrentControlSet\Control\Keyboard Layout';
+
+   New-ItemProperty -Path $kbLayout -Name "Scancode Map" -PropertyType Binary -Value ([byte[]]$hexified);
+
+   You will have to hit enter afterwards to run the final line (and
+   you'll also probably have to confirm that you really want to paste
+   multi-line text, or else copy/paste the lines one-by-one). Reboot,
+   and caps lock should now be control!
+
+   Notes:
+   (1) The PowerShell lines above create a new registry that changes
+       the keyboard layout. If you want to remove this setting, you
+       just have to delete this registry (e.g. using the registry editor).
+       The registry is named "Scancode Map," and it lives in
+       System\CurrentControlSet\Control\Keyboard Layout.
+
+   (2) This setting is sometimes very important to have if you're running
+       a VM with caps lock mapped to control. Once upon a time, I had
+       a Windows host without this mapping and a Linux guest that had it,
+       and when I rebooted, my keyboard stopped working (the device
+       manager couldn't start it because of damaged registry information).
+       I think the problem might have been that the caps lock button had
+       a light on it to indicate whether it was on, and the guest machine
+       was somehow still toggling that light without actually changing
+       caps lock. At any rate, after mapping caps lock to control on the
+       host machine, I never had the problem again.
+
+   (3) For more information on this (and other) methods of mapping
+       caps lock to control, see the following gist:
+       https://gist.github.com/joshschmelzle/5e88dabc71014d7427ff01bca3fed33d
+
+
+
+Step IV: VM Setup
+------------------
+1. Find Virtualbox on Google and install it manually.
+
+2. Create a new virtual machine in Virtualbox, and then set it up like
+   any other Linux machine (see computer_setup.txt). Alternately, install
+   a backed-up VM.
+
+
+
+Step V: Odds and Ends
+---------------------
+1. PDF viewer: for the occasional PDF viewing, you can get by with 
+   Google Chrome's built-in viewer. For more involved/frequent PDF
+   reading, I prefer zathura on Linux. But Foxit is a decent
+   cross-platform alternative.
+
+2. Social: I like to have Zoom available, so it's probably worth finding
+   it on Google and installing it.
+
+3. Games: one of the main advantages to having a Windows machine at all
+   is the ability to install things like games that aren't always
+   cross-platform. In particular, Steam is something I often end up
+   installing.
+
+4. Cloud storage: I typically do most of my file storage tasks on Linux,
+   since that's where a lot of my workflow happens. On Windows, I'll
+   generally just use Google drive in a browser. However, you could
+   install Google drive locally if you intend to do a lot with cloud
+   storage on Windows.
