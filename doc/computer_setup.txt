@@ -89,6 +89,8 @@ Step III: Browser Setup
    should in principle be downloaded from the cloud. In practice, though, I
    don't actually use that plugin very much at the moment.
 
+
+
 Step IV: Odds and Ends
 ----------------------
 This section covers some miscellaneous applications that I often like to have
